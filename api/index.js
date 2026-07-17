@@ -60,16 +60,14 @@ export default async function handler(req, res) {
     message = MESSAGES.operator;
 
   } else {
-
-    message = `✅ Спасибо!
+  message = `✅ Спасибо!
 
 Ваше сообщение получено:
 
 ${text}
 
 Оператор скоро свяжется с вами.`;
-  }
-
+}
   await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: "POST",
     headers: {
