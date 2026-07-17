@@ -26,7 +26,7 @@ export default async function handler(req, res) {
   if (text === "/start") {
     message = `${MESSAGES.welcome}
 
-`;
+
 
 
     keyboard = {
