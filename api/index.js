@@ -24,9 +24,8 @@ export default async function handler(req, res) {
   let keyboard = {};
 
   if (text === "/start") {
-    message =message = MESSAGES.welcome;
+    message = MESSAGES.welcome;
 
-Выберите нужный раздел:`;
 
     keyboard = {
       keyboard: [
