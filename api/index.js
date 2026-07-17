@@ -9,56 +9,79 @@ export default async function handler(req, res) {
     return res.status(200).send("OK");
   }
 
-  try {
-    const update = req.body;
+  const update = req.body;
 
-    if (update.message) {
-      const chatId = update.message.chat.id;
-      const text = update.message.text || "";
+  if (!update.message) {
+    return res.status(200).send("OK");
+  }
 
-      if (text === "/start") {
-        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            chat_id: chatId,
-            text:
+  const chatId = update.message.chat.id;
+  const text = update.message.text || "";
+
+  let message = "";
+  let keyboard = {};
+
+  if (text === "/start") {
+    message =
 `🚖 Добро пожаловать в Global Taxi SPB!
 
-Междугородние поездки по России.
+Выберите нужный раздел:`;
 
-Выберите действие:`,
-            reply_markup: {
-              keyboard: [
-                ["🚖 Заказать поездку"],
-                ["💰 Рассчитать стоимость"],
-                ["🌍 Междугородние маршруты"],
-                ["📞 Связаться с диспетчером"],
-                ["ℹ️ О компании"]
-              ],
-              resize_keyboard: true
-            }
-          })
-        });
-      } else {
-        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            chat_id: chatId,
-            text: `Вы выбрали: ${text}`
-          })
-        });
-      }
-    }
-
-    return res.status(200).send("OK");
-
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
+    keyboard = {
+      keyboard: [
+        ["🚖 Заказать поездку"],
+        ["💰 Рассчитать стоимость"],
+        ["🌍 Межгород"],
+        ["🚘 Стать водителем"],
+        ["☎️ Связаться с оператором"]
+      ],
+      resize_keyboard: true
+    };
   }
+
+  else if (text === "🚖 Заказать поездку") {
+    message = "📍 Напишите адрес подачи автомобиля.";
+  }
+
+  else if (text === "💰 Рассчитать стоимость") {
+    message = "📍 Напишите маршрут:\n\nНапример:\nБалтийский вокзал → Пулково";
+  }
+
+  else if (text === "🌍 Межгород") {
+    message = "🌍 Укажите город отправления и город назначения.";
+  }
+
+  else if (text === "🚘 Стать водителем") {
+    message = "🚘 Отправьте:\n\nФИО\nТелефон\nМарка автомобиля";
+  }
+
+  else if (text === "☎️ Связаться с оператором") {
+    message =
+"☎️ Оператор свяжется с вами.\n\nИли позвоните:\n+7 (XXX) XXX-XX-XX";
+  }
+
+  else {
+    message =
+`✅ Спасибо!
+
+Ваше сообщение получено:
+
+${text}
+
+Оператор скоро свяжется с вами.`;
+  }
+
+  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: message,
+      reply_markup: keyboard
+    })
+  });
+
+  return res.status(200).send("OK");
 }
