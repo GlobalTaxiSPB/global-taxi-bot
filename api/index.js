@@ -1,3 +1,4 @@
+import { MESSAGES } from "./messages.js";
 export default async function handler(req, res) {
   const token = process.env.BOT_TOKEN;
 
