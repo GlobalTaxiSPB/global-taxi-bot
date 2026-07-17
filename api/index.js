@@ -41,7 +41,7 @@ export default async function handler(req, res) {
     };
   }
 
-  else if (text === "🚖 Заказать поездку") {
+  ) {
     message = "📍 Напишите адрес подачи автомобиля.";
   }
 
