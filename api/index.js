@@ -24,8 +24,7 @@ export default async function handler(req, res) {
   let keyboard = {};
 
   if (text === "/start") {
-    message =
-`🚖 Добро пожаловать в Global Taxi SPB!
+    message =message = MESSAGES.welcome;
 
 Выберите нужный раздел:`;
 
