@@ -1,5 +1,6 @@
 import { MESSAGES } from "./messages.js";
 import { getState, setState, clearState } from "./state.js";
+
 export default async function handler(req, res) {
   const token = process.env.BOT_TOKEN;
 
@@ -26,9 +27,6 @@ export default async function handler(req, res) {
   if (text === "/start") {
     message = MESSAGES.welcome;
 
-
-
-
     keyboard = {
       keyboard: [
         ["🚖 Заказать поездку"],
@@ -40,30 +38,29 @@ export default async function handler(req, res) {
       resize_keyboard: true
     };
 
-  else if (text === "🚖 Заказать поездку") {
+  } else if (text === "🚖 Заказать поездку") {
+
     message = "📍 Напишите адрес подачи автомобиля.";
-  }
 
-  else if (text === "💰 Рассчитать стоимость") {
+  } else if (text === "💰 Рассчитать стоимость") {
+
     message = "📍 Напишите маршрут:\n\nНапример:\nБалтийский вокзал → Пулково";
-  }
 
-  else if (text === "🌍 Межгород") {
+  } else if (text === "🌍 Межгород") {
+
     message = "🌍 Укажите город отправления и город назначения.";
-  }
 
-  else if (text === "🚘 Стать водителем") {
+  } else if (text === "🚘 Стать водителем") {
+
     message = "🚘 Отправьте:\n\nФИО\nТелефон\nМарка автомобиля";
-  }
 
-  else if (text === "☎️ Связаться с оператором") {
-    message =
-"☎️ Оператор свяжется с вами.\n\nИли позвоните:\n+7 (XXX) XXX-XX-XX";
-  }
+  } else if (text === "☎️ Связаться с оператором") {
 
-  else {
-    message =
-`✅ Спасибо!
+    message = "☎️ Оператор свяжется с вами.\n\nИли позвоните:\n+7 (XXX) XXX-XX-XX";
+
+  } else {
+
+    message = `✅ Спасибо!
 
 Ваше сообщение получено:
 
