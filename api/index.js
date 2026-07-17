@@ -1,11 +1,10 @@
 import { MESSAGES } from "./messages.js";
-import { getState, setState, clearState } from "./state.js";
 
 export default async function handler(req, res) {
   const token = process.env.BOT_TOKEN;
 
   if (!token) {
-    return res.status(500).json({ error: "BOT_TOKEN not found" });
+    return res.status(500).send("BOT_TOKEN not found");
   }
 
   if (req.method !== "POST") {
@@ -25,6 +24,7 @@ export default async function handler(req, res) {
   let keyboard = {};
 
   if (text === "/start") {
+
     message = MESSAGES.welcome;
 
     keyboard = {
@@ -35,28 +35,29 @@ export default async function handler(req, res) {
         ["🚘 Стать водителем"],
         ["☎️ Связаться с оператором"]
       ],
-      resize_keyboard: true
+      resize_keyboard: true,
+      persistent: true
     };
 
   } else if (text === "🚖 Заказать поездку") {
 
-    message = "📍 Напишите адрес подачи автомобиля.";
+    message = MESSAGES.order;
 
   } else if (text === "💰 Рассчитать стоимость") {
 
-    message = "📍 Напишите маршрут:\n\nНапример:\nБалтийский вокзал → Пулково";
+    message = MESSAGES.price;
 
   } else if (text === "🌍 Межгород") {
 
-    message = "🌍 Укажите город отправления и город назначения.";
+    message = MESSAGES.intercity;
 
   } else if (text === "🚘 Стать водителем") {
 
-    message = "🚘 Отправьте:\n\nФИО\nТелефон\nМарка автомобиля";
+    message = MESSAGES.driver;
 
   } else if (text === "☎️ Связаться с оператором") {
 
-    message = "☎️ Оператор свяжется с вами.\n\nИли позвоните:\n+7 (XXX) XXX-XX-XX";
+    message = MESSAGES.operator;
 
   } else {
 
