@@ -39,7 +39,6 @@ export default async function handler(req, res) {
       ],
       resize_keyboard: true
     };
-  }
 
   else if (text === "🚖 Заказать поездку") {
     message = "📍 Напишите адрес подачи автомобиля.";
