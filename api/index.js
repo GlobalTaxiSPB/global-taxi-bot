@@ -2,9 +2,7 @@ export default async function handler(req, res) {
   const token = process.env.BOT_TOKEN;
 
   if (!token) {
-    return res.status(500).json({
-      error: "BOT_TOKEN not found"
-    });
+    return res.status(500).json({ error: "BOT_TOKEN not found" });
   }
 
   if (req.method !== "POST") {
@@ -18,29 +16,49 @@ export default async function handler(req, res) {
       const chatId = update.message.chat.id;
       const text = update.message.text || "";
 
-      const response = await fetch(
-        `https://api.telegram.org/bot${token}/sendMessage`,
-        {
+      if (text === "/start") {
+        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
             chat_id: chatId,
-            text: `Вы написали: ${text}`,
-          }),
-        }
-      );
+            text:
+`🚖 Добро пожаловать в Global Taxi SPB!
 
-      const data = await response.json();
-      console.log("Telegram response:", data);
+Междугородние поездки по России.
+
+Выберите действие:`,
+            reply_markup: {
+              keyboard: [
+                ["🚖 Заказать поездку"],
+                ["💰 Рассчитать стоимость"],
+                ["🌍 Междугородние маршруты"],
+                ["📞 Связаться с диспетчером"],
+                ["ℹ️ О компании"]
+              ],
+              resize_keyboard: true
+            }
+          })
+        });
+      } else {
+        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: `Вы выбрали: ${text}`
+          })
+        });
+      }
     }
 
     return res.status(200).send("OK");
+
   } catch (err) {
-    console.error("ERROR:", err);
-    return res.status(500).json({
-      error: err.message
-    });
+    return res.status(500).json({ error: err.message });
   }
 }
