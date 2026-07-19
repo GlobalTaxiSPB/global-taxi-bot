@@ -55,13 +55,26 @@ export default async function handler(req, res) {
 
   } else if (text === "🌍 Межгород") {
 
-    message = MESSAGES.intercity;
+    } else if (state.step?.step === "pickup") {
 
-  } else if (text === "🚘 Стать водителем") {
+    setState(chatId, {
+        step: "destination",
+        pickup: text
+    });
 
-    message = MESSAGES.driver;
+    message = "🏁 Введите адрес назначения.";
 
-  } else if (text === "☎️ Связаться с оператором") {
+} else {
+
+    message = `✅ Спасибо!
+
+Ваше сообщение получено:
+
+${text}
+
+Оператор скоро свяжется с вами.`;
+
+  }
 
     message = MESSAGES.operator;
 
