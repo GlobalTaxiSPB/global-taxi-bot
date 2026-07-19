@@ -48,23 +48,28 @@ export default async function handler(req, res) {
 
     setState(chatId, { step: "pickup" });
     message = MESSAGES.order;
-
-  } else if (text === "💰 Рассчитать стоимость") {
-
-    message = MESSAGES.price;
-
   } else if (text === "🌍 Межгород") {
 
-    } else if (state.step?.step === "pickup") {
+    message = MESSAGES.intercity;
+
+  } else if (text === "🚘 Стать водителем") {
+
+    message = MESSAGES.driver;
+
+  } else if (text === "☎️ Связаться с оператором") {
+
+    message = MESSAGES.operator;
+
+  } else if (state.step === "pickup") {
 
     setState(chatId, {
-        step: "destination",
-        pickup: text
+      step: "destination",
+      pickup: text
     });
 
     message = "🏁 Введите адрес назначения.";
 
-} else {
+  } else {
 
     message = `✅ Спасибо!
 
@@ -75,8 +80,6 @@ ${text}
 Оператор скоро свяжется с вами.`;
 
   }
-
-    message = MESSAGES.operator;
 
   } else {
 
