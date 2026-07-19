@@ -1,5 +1,4 @@
 import { MESSAGES } from "./messages.js";
-import { getState, setState, clearState } from "./state.js";
 
 export default async function handler(req, res) {
   const token = process.env.BOT_TOKEN;
@@ -21,14 +20,10 @@ export default async function handler(req, res) {
   const chatId = update.message.chat.id;
   const text = update.message.text || "";
 
-  const state = getState(chatId);
-
   let message = "";
   let keyboard = {};
 
   if (text === "/start") {
-
-    clearState(chatId);
 
     message = MESSAGES.welcome;
 
@@ -46,8 +41,12 @@ export default async function handler(req, res) {
 
   } else if (text === "🚖 Заказать поездку") {
 
-    setState(chatId, { step: "pickup" });
     message = MESSAGES.order;
+
+  } else if (text === "💰 Рассчитать стоимость") {
+
+    message = MESSAGES.price;
+
   } else if (text === "🌍 Межгород") {
 
     message = MESSAGES.intercity;
@@ -59,27 +58,6 @@ export default async function handler(req, res) {
   } else if (text === "☎️ Связаться с оператором") {
 
     message = MESSAGES.operator;
-
-  } else if (state.step === "pickup") {
-
-    setState(chatId, {
-      step: "destination",
-      pickup: text
-    });
-
-    message = "🏁 Введите адрес назначения.";
-
-  } else {
-
-    message = `✅ Спасибо!
-
-Ваше сообщение получено:
-
-${text}
-
-Оператор скоро свяжется с вами.`;
-
-  }
 
   } else {
 
